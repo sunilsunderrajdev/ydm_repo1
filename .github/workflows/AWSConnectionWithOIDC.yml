@@ -1,0 +1,23 @@
+name: AWS OIDC Connect
+on:
+  push
+env:
+  AWS_REGION: "us-east-1"
+permissions:
+  id-token: write
+  contents: read
+jobs:
+  CreateVPC:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Git clone the repository
+        uses: actions/checkout@v4
+      - name: configure aws credentials
+        uses: aws-actions/configure-aws-credentials@v3
+        with:
+          role-to-assume: arn:aws:iam::616611317351:role/github-aws-admin-role
+          role-session-name: awsadminrolesession
+          aws-region: ${{ env.AWS_REGION }}
+      - name: Print assumes roles
+        run: aws sts get-caller-identity 
+  
