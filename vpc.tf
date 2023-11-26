@@ -1,7 +1,7 @@
 resource "aws_vpc" "main" {
     cidr_block = "{var.vpc_cidr}"
 
-    tages = {
+    tags = {
         Name = "Project YDM"
     }
 }
