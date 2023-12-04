@@ -1,8 +1,19 @@
 terraform {
-    required_version = "1.6.5"
+    required_providers {
+        aws = {
+            source = "hashicorp/aws"
+        }
+        random = {
+            source = "hashicorp/random"
+        }
+    }
 
-    backend "local" {
-        path = "terraform.tfstate"
+    backend "remote" {
+        organization = "sunilsunderrajdev"
+
+        workspaces {
+            name = "Github-AWS-TF_API"
+        }
     }
 }
 
