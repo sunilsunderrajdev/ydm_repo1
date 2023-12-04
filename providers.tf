@@ -1,11 +1,18 @@
 terraform {
-    required_version = "1.6.5"
+    required_providers {
+        aws = {
+            source = "hashicorp/aws"
+        }
+        random = {
+            source = "hashicorp/random"
+        }
+    }
 
-    cloud {
+    backend "remote" {
         organization = "sunilsunderrajdev"
 
         workspaces {
-            name = "ydm1"
+            name = "Github-AWS-TF_API"
         }
     }
 }
