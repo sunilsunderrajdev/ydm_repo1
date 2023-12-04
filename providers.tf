@@ -1,8 +1,12 @@
 terraform {
     required_version = "1.6.5"
 
-    backend "local" {
-        path = "terraform.tfstate"
+    cloud {
+        organization = "sunilsunderrajdev"
+
+        workspaces {
+            name = "ydm1"
+        }
     }
 }
 
