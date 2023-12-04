@@ -5,7 +5,7 @@ resource "aws_eip" "nat_eip" {
 
 resource "aws_nat_gateway" "nat" {
   allocation_id = "${aws_eip.nat_eip.id}"
-  subnet_id     = "${element(aws_subnet.public_subnet.*.id, 0)}"
+  subnet_id     = "${element(aws_subnet.public_subnets.*.id, 0)}"
   depends_on    = [aws_internet_gateway.igw]
   tags = {
     Name        = "Public nat"
@@ -41,13 +41,13 @@ resource "aws_route" "private_nat_gateway" {
 /* Route table associations */
 resource "aws_route_table_association" "public" {
   count          = "${length(["10.0.1.0/24","10.0.2.0/24"])}"
-  subnet_id      = "${element(aws_subnet.public_subnet.*.id, count.index)}"
+  subnet_id      = "${element(aws_subnet.public_subnets.*.id, count.index)}"
   route_table_id = "${aws_route_table.public.id}"
 }
 
 resource "aws_route_table_association" "private" {
   count          = "${length(["10.0.3.0/24","10.0.4.0/24"])}"
-  subnet_id      = "${element(aws_subnet.private_subnet.*.id, count.index)}"
+  subnet_id      = "${element(aws_subnet.private_subnets.*.id, count.index)}"
   route_table_id = "${aws_route_table.private.id}"
 }
 
