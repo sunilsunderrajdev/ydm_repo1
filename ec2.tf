@@ -2,7 +2,7 @@ resource "aws_instance" "ec2ydm" {
     ami = "ami-0230bd60aa48260c6"
     instance_type = "t2.micro"
 
-    subnet_id = "Private Subnet 1"
+    subnet_id = "subnet-0d708126c0a1a01f3"
     user_data = <<EOF
 #!/bin/bash
 echo "Copying the SSH Key to the server"
