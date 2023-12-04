@@ -16,6 +16,6 @@ resource "aws_subnet" "private_subnets" {
  availability_zone_id = element(["use1-az1"], count.index)
  
  tags = {
-   Name = "Observability Private Subnet ${count.index + 1} for ${var.realm}"
+   Name = "Observability Private Subnet ${count.index + 1}"
  }
 }
