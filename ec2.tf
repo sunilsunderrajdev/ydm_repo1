@@ -11,11 +11,6 @@ resource "aws_instance" "ec2ydm_public" {
     }
 }
 
-resource "aws_eip_association" "eip_assoc" {
-  instance_id   = aws_instance.ec2ydm_public.id
-  allocation_id = aws_eip.nat_eip.id
-}
-
 # KeyPair
 resource "aws_key_pair" "EC2_key" {
     key_name = "EC2_key"
