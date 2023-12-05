@@ -9,10 +9,12 @@ resource "aws_instance" "ec2ydm_public" {
     tags = {
         Name: "YDM EC2 in public subnet 1 - Bastion host"
     }
+
+    depends_on = [aws_key_pair.EC2_key]
 }
 
 # KeyPair
 resource "aws_key_pair" "EC2_key" {
     key_name = "EC2_key"
-    public_key = "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQCs9NRkwo4EhyqYNk/hd7FwAFBr49TbgWAMq+arvBb7VTCe1+3WMwHE/B6Ur4CfSesUqST9sX1eGVr0gCwX5DPNQbgA/wiHHF2UDjdUW29PXOCLoaME52voUo45kzHNQxRxmqJkOLnUBlvKg8AvDk5JOpl+FLgKv+b0pB3gf/L+JA9swKC1SaQVO+QdcdT4OztXCqJum+2BykBnutIBMXPD2tNOCLIZAhRRXr0dQJSO85lrEFuTznNzymTvi00UsR5gd9v/QzAffUeUKyxshDx+XReo/OiQi1o8EYeMohseM/nKlTfFpsXxSETxG3xhRz/FtfDGFYE6RpLcBRC8xRGlmXnb1CejFD/M6nSP4EK4aiWc9C0B9be4B2IKN66f1FB8jlXmPOH0a4iEfROi4lQ9s9jRuKsPb//qLcH7gPKn58nUx+IDzJkekcrHfR4RJf74KVLQoH+JODzJ1c3C18SZsn6S1hAV/NwLoDLJPUaBFolRl67kxwoS3W3fku+0SCYQ/8Nh7i5lodMMK+rX9uigN53M1UZlY7ljlx3JpMu1z18Le0SmUJ3niLvtmiWc/4eUOp5CrDa1kTPaoGaU7Nafy4/ijEcn8AgzYSSK2YotRm0fC5Zn2+YLe1dDpUoLn9ydD6BZlqLdopXCbv5rz/hF9jm2xRkeNIru9xbcjA6g3Q== shikh@SSRDROID"
+    public_key = "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQDWzQvvpG20KIIbMKaldBki0d81B60ePY4oK1GtEie+ejWqrSYPvkZa55SiKY4QBnqYUj+LBII4nJpoGjXOoSUSup4AmKtHQMz006SAOr5qjyctRKlps1ciKjju9419xIP5LzglFAqiQWplELJ3X4KjCNuo+gLe+MnUxGJg3GR/RxhFY8pFVeij2QqvxTatudH35yxH+tFFhpqPTLEDgmQoudyJxouR911RFofrr/zqZ4Nfv+567TXfqBK4KeoYGxg72Ci8K+WVUMAFLXgFbVmg+xdbkM/nuE6qzts0tjI6NNrpCX80HTY/YloxQdupmgbt3V7uuSv9FX3fk2+Nn+26/MKvJDDOSx7Re2KGwlzxg75bkGBTfr9E6DB/RzxDWO5jGno5S7B7djhPtHvyYgWGm14wvCLqYlEud6+5pUf/uNR8aZ73IlT1biQHcDiGF0H7P7XbZepEMvOflTf2ijGOXQTMaHjV565CNjGM/1mx9+lwqsYwLo0Fwjl4ApF3laU3VWksma1IXpXiqrrH8Py8Mi9Si/LmDfD77DUs/7kifp0EKTtduFVTsrFOQF0og8zLGKgL+gqB2QeG1KeaC/HFHkhpFfZUjpqqz1jEOtW265I2PFwTNeTmcTlYo1yTlBCSMjudAwZ6oNAwKKh/cSkm+jf+vJBEInUVZAkoOkktpw== shikh@SSRDROID"
 }
