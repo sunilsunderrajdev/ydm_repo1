@@ -4,20 +4,20 @@ resource "aws_instance" "ec2ydm_public" {
 
     subnet_id = "${element(aws_subnet.public_subnets.*.id, 0)}"
     vpc_security_group_ids = ["${aws_security_group.ssh-allowed.id}"]
-    #key_name = "EC2_key_pair"
+    key_name = "EC2_key_pair_nonaws"
 
     tags = {
         Name: "YDM EC2 in public subnet 1 - Bastion host"
     }
 
-    #depends_on = [aws_key_pair.EC2_key_pair]
+    depends_on = [aws_key_pair.EC2_key_pair_nonaws]
 }
 
 # KeyPair
-#resource "aws_key_pair" "EC2_key" {
-#    key_name = "EC2_key"
-#    public_key = "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQDWzQvvpG20KIIbMKaldBki0d81B60ePY4oK1GtEie+ejWqrSYPvkZa55SiKY4QBnqYUj+LBII4nJpoGjXOoSUSup4AmKtHQMz006SAOr5qjyctRKlps1ciKjju9419xIP5LzglFAqiQWplELJ3X4KjCNuo+gLe+MnUxGJg3GR/RxhFY8pFVeij2QqvxTatudH35yxH+tFFhpqPTLEDgmQoudyJxouR911RFofrr/zqZ4Nfv+567TXfqBK4KeoYGxg72Ci8K+WVUMAFLXgFbVmg+xdbkM/nuE6qzts0tjI6NNrpCX80HTY/YloxQdupmgbt3V7uuSv9FX3fk2+Nn+26/MKvJDDOSx7Re2KGwlzxg75bkGBTfr9E6DB/RzxDWO5jGno5S7B7djhPtHvyYgWGm14wvCLqYlEud6+5pUf/uNR8aZ73IlT1biQHcDiGF0H7P7XbZepEMvOflTf2ijGOXQTMaHjV565CNjGM/1mx9+lwqsYwLo0Fwjl4ApF3laU3VWksma1IXpXiqrrH8Py8Mi9Si/LmDfD77DUs/7kifp0EKTtduFVTsrFOQF0og8zLGKgL+gqB2QeG1KeaC/HFHkhpFfZUjpqqz1jEOtW265I2PFwTNeTmcTlYo1yTlBCSMjudAwZ6oNAwKKh/cSkm+jf+vJBEInUVZAkoOkktpw== shikh@SSRDROID"
-#}
+resource "aws_key_pair" "EC2_key_pair_nonaws" {
+    key_name = "EC2_key_pair_nonaws"
+    public_key = "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDGYsZQumFVfIvHlIS/UppkAhfu5N9vZ0kMFcZEviH3TXEgXZ5pChUPTWjcEhViq5MJhJS4UfvBNluPd3K8UGnnduaeRoZ9yURYp2Sy39EZvonVbj0zoi3SxpmKHif9u4f/Az8WxalBKRn8cz1+ALyeiJwZFSeVqfJ9Oz5KcwWUHibDP+QBd8zJcGVJjaosOuRgiCDK68lwDJcpzx0Rqxmj1HlyL8cJCshoPqnX8Tc8D1pDSPVGnbkbrXBcEAgBG+sFoVyqXxsn2CZ3FEwoBZegdsqOoucen8x3FwSKA1HxL0EbocklovO8xedBu0/GB57je265+EYrxKGdm1kwWSTT shikh@SSRDROID"
+}
 
 #resource "tls_private_key" "EC2_private_key" {
 #    algorithm = "RSA"
