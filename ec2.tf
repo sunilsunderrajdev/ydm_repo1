@@ -4,7 +4,7 @@ resource "aws_instance" "ec2ydm_public" {
 
     subnet_id = "${element(aws_subnet.public_subnets.*.id, 0)}"
     vpc_security_group_ids = ["${aws_security_group.ssh-allowed.id}"]
-    key_name = "EC2_key"
+    key_name = "EC2_key_pair"
 
     tags = {
         Name: "YDM EC2 in public subnet 1 - Bastion host"
@@ -25,7 +25,7 @@ resource "tls_private_key" "EC2_private_key" {
 }
 
 resource "aws_key_pair" "EC2_key_pair" {
-    key_name = "aws_key_pair"
+    key_name = "EC2_key_pair"
     public_key = tls_private_key.EC2_private_key.public_key_openssh
 }
 
