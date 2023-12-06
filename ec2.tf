@@ -4,6 +4,7 @@ resource "aws_instance" "ec2ydm_private" {
 
     subnet_id = "${element(aws_subnet.private_subnets.*.id, 0)}"
     vpc_security_group_ids = ["${aws_security_group.ssh-allowed.id}"]
+    key_name = "EC2_key_pair_bastion"
 
     tags = {
         Name: "YDM EC2 in private subnet 1"
