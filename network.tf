@@ -58,7 +58,7 @@ resource "aws_route_table_association" "public" {
 resource "aws_nat_gateway" "nats" {
   count         = length(var.vpc_cidrs_public)
   allocation_id = "${aws_eip.nat_eip.id}"
-  subnet_id     = "${element(aws_subnet.public_subnets.*.id, count)}"
+  subnet_id     = "${element(aws_subnet.public_subnets.*.id, count.index)}"
   depends_on    = [aws_internet_gateway.igw]
   tags = {
     Name        = "Public nat ${count.index + 1}"
