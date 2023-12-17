@@ -17,8 +17,12 @@ resource "aws_internet_gateway" "igw" {
 }
 
 resource "aws_eip" "nat_eip" {
-  vpc        = true
-  depends_on = [aws_internet_gateway.igw]
+  count       = length(var.vpc_cidrs_public)
+  vpc         = true
+  depends_on   = [aws_internet_gateway.igw]
+  tags = {
+    Name = "NAT EIP ${count.index + 1}"
+  }
 }
 
 /* Public subnets */
@@ -57,7 +61,7 @@ resource "aws_route_table_association" "public" {
 
 resource "aws_nat_gateway" "nats" {
   count         = length(var.vpc_cidrs_public)
-  allocation_id = "${aws_eip.nat_eip.id}"
+  allocation_id = "${element(aws_eip.nat_eip.*.id, count.index)}"
   subnet_id     = "${element(aws_subnet.public_subnets.*.id, count.index)}"
   depends_on    = [aws_internet_gateway.igw]
   tags = {
