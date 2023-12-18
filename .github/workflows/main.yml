@@ -1,0 +1,53 @@
+name: AWS Provisioning
+on:
+  push
+env:
+  AWS_REGION: "us-east-1"
+permissions:
+  id-token: write
+  contents: read
+jobs:
+  AWSProvisioning:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Git clone the repository
+        uses: actions/checkout@v4
+      - name: configure aws credentials
+        uses: aws-actions/configure-aws-credentials@v3
+        with:
+          role-to-assume: arn:aws:iam::616611317351:role/github-aws-admin-role
+          role-session-name: awsadminrolesession
+          aws-region: ${{ env.AWS_REGION }}
+      - name: Print assumes roles
+        run: aws sts get-caller-identity 
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v2.0.2
+        with:
+          cli_config_credentials_token: ${{ secrets.TF_API_TOKEN }}
+      - name: Terraform format
+        id: fmt
+        run: terraform fmt -check
+        continue-on-error: true
+      - name: Terraform Init
+        id: init
+        run: terraform init
+      - name: Terraform Validate
+        id: validate
+        run: terraform validate
+      - name: Terraform Plan
+        id: plan
+        run: terraform plan
+        continue-on-error: true
+      - name: Terraform Plan Status
+        if: steps.plan.outcome == 'failure'
+        run: exit 1
+      - name: Terraform Apply
+        if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+        run: terraform apply -auto-approve
+#      - name: Terraform Plan Destroy
+#        id: plandestroy
+#        run: terraform plan -destroy
+#        continue-on-error: true        
+#      - name: Terraform Destroy
+#        if: github.ref == 'refs/heads/feature_vpc' && github.event_name == 'push'
+#        run: terraform apply -destroy
