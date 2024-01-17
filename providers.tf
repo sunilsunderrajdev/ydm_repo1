@@ -12,7 +12,7 @@ terraform {
     bucket          = "tf-remote-state.6166-1131-7351"
     key             = "tf.state"
     region          = "us-east-1"
-    dynamodb_table  = "terraform-remote-state"
+    dynamodb_table  = "tf-remote-state"
   }
 }
 
