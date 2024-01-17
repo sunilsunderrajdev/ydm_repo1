@@ -8,12 +8,11 @@ terraform {
     }
   }
 
-  backend "remote" {
-    organization = "sunilsunderrajdev"
-
-    workspaces {
-      name = "Github-AWS-TF_API"
-    }
+  backend "s3" {
+    bucket          = "tf-remote-state.6166-1131-7351"
+    key             = "tf.state"
+    region          = "us-east-1"
+    dynamodb_table  = "terraform-remote-state"
   }
 }
 
