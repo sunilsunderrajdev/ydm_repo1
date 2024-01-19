@@ -6,6 +6,9 @@ env:
 permissions:
   id-token: write
   contents: read
+defaults:
+  run:
+    working-directory: root_dir
 jobs:
   AWSProvisioning:
     runs-on: ubuntu-latest
@@ -30,24 +33,46 @@ jobs:
         continue-on-error: true
       - name: Terraform Init
         id: init
-        run: terraform init
+        run:  |
+            find -mindepth 1 -maxdepth 1 -type d -exec terraform init \;
       - name: Terraform Validate
         id: validate
-        run: terraform validate
-      - name: Terraform Plan
-        id: plan
-        run: terraform plan
+        run: |
+          find -mindepth 1 -maxdepth 1 -type d -exec terraform validate \;
+      - name: Terraform Plan Level1
+        id: plan_level1
+        run: |
+          working-directory: ./level1
+          terraform plan
         continue-on-error: true
-      - name: Terraform Plan Status
-        if: steps.plan.outcome == 'failure'
+      - name: Terraform Plan Level1 Status
+        if: steps.plan_level1.outcome == 'failure'
         run: exit 1
-      - name: Terraform Apply
+      - name: Terraform Plan Level2
+        id: plan_level2
+        run: |
+          working-directory: ./level2
+          terraform plan
+        continue-on-error: true
+      - name: Terraform Plan Level2 Status
+        if: steps.plan_level2.outcome == 'failure'
+        run: exit 1        
+      - name: Terraform Apply Level1
         if: github.ref == 'refs/heads/main' && github.event_name == 'push'
-        run: terraform apply -auto-approve
+        run: |
+          working-directory: ./level1
+          terraform apply -auto-approve
+      - name: Terraform Apply Level2
+        if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+        run: |
+          working-directory: ./level2
+          terraform apply -auto-approve          
       - name: Terraform Plan Destroy
         id: plandestroy
-        run: terraform plan -destroy
-        continue-on-error: true
+        run: |
+          find -mindepth 1 -maxdepth 1 -type d -exec terraform plan -destroy \; 
+          continue-on-error: true
       - name: Terraform Destroy
         if: github.ref == 'refs/heads/feature_vpc' && github.event_name == 'push'
-        run: terraform apply -destroy
+        run: |
+          find -mindepth 1 -maxdepth 1 -type d -exec terraform apply -destroy \; 

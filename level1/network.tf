@@ -109,34 +109,3 @@ resource "aws_route_table_association" "private_route_table_association" {
   route_table_id = element(aws_route_table.private_routes.*.id, count.index)
 }
 
-resource "aws_security_group" "ssh-allowed" {
-  name        = "vpc-allow-ssh"
-  description = "Default security group to allow inbound/outbound from the VPC"
-  vpc_id      = aws_vpc.vpc.id
-  depends_on  = [aws_vpc.vpc]
-
-  egress {
-    from_port   = 0
-    to_port     = 0
-    protocol    = -1
-    cidr_blocks = ["0.0.0.0/0"]
-  }
-  ingress {
-    description = "SSH from public"
-    from_port   = 22
-    to_port     = 22
-    protocol    = "tcp"
-    cidr_blocks = ["0.0.0.0/0"]
-  }
-  ingress {
-    description = "HTTP from public"
-    from_port   = 80
-    to_port     = 80
-    protocol    = "tcp"
-    cidr_blocks = ["0.0.0.0/0"]
-  }
-
-  tags = {
-    Name = "ssh-allowed"
-  }
-}
