@@ -37,33 +37,29 @@ jobs:
         run: |
           find -mindepth 1 -maxdepth 1 -type d -exec terraform validate \;
       - name: Terraform Plan Level1
+        working-directory: ./level1
         id: plan_level1
-        run: |
-          working-directory: ./level1
-          terraform plan
+        run: terraform plan
         continue-on-error: true
       - name: Terraform Plan Level1 Status
         if: steps.plan_level1.outcome == 'failure'
         run: exit 1
       - name: Terraform Plan Level2
+        working-directory: ./level2
         id: plan_level2
-        run: |
-          working-directory: ./level2
-          terraform plan
+        run: terraform plan
         continue-on-error: true
       - name: Terraform Plan Level2 Status
         if: steps.plan_level2.outcome == 'failure'
-        run: exit 1        
+        run: exit 1
       - name: Terraform Apply Level1
+        working-directory: ./level1
         if: github.ref == 'refs/heads/main' && github.event_name == 'push'
-        run: |
-          working-directory: ./level1
-          terraform apply -auto-approve
+        run: terraform apply -auto-approve
       - name: Terraform Apply Level2
+        working-directory: ./level2
         if: github.ref == 'refs/heads/main' && github.event_name == 'push'
-        run: |
-          working-directory: ./level2
-          terraform apply -auto-approve          
+        run: terraform apply -auto-approve          
       - name: Terraform Plan Destroy
         id: plandestroy
         run: |
