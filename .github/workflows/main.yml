@@ -6,9 +6,6 @@ env:
 permissions:
   id-token: write
   contents: read
-defaults:
-  run:
-    working-directory: root_dir
 jobs:
   AWSProvisioning:
     runs-on: ubuntu-latest
