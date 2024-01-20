@@ -33,7 +33,7 @@ jobs:
         continue-on-error: true
       - name: Terraform Init
         id: init
-        run:  |
+        run: |
           find -mindepth 1 -maxdepth 1 -type d -name "tf_*" -exec bash -c "cd {} && terraform init" \;
       - name: Terraform Validate
         id: validate
