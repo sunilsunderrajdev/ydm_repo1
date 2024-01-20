@@ -61,13 +61,9 @@ jobs:
       - name: Terraform Apply Level2
         working-directory: ./tf_level2
         if: github.ref == 'refs/heads/main' && github.event_name == 'push'
-        run: terraform -chdir=${{ github.workspace }}/tf_level2 apply -auto-approve          
-      - name: Terraform Plan Destroy
-        id: plandestroy
-        run: |
-          find -mindepth 1 -maxdepth 1 -type d -name "tf_*" -exec bash -c "cd {} && terraform plan destroy" \;
-          continue-on-error: true
+        run: terraform -chdir=${{ github.workspace }}/tf_level2 apply -auto-approve
       - name: Terraform Destroy
-        if: github.ref == 'refs/heads/feature_vpc' && github.event_name == 'push'
+        if: github.ref == 'refs/heads/tf_remote_state' && github.event_name == 'push'
         run: |
-          find -mindepth 1 -maxdepth 1 -type d -name "tf_*" -exec bash -c "cd {} && terraform apply destroy" \;
+          cd ${{ github.workspace }}
+          find -mindepth 1 -maxdepth 1 -type d -name "tf_*" -exec bash -c "terraform -chdir=${{ github.workspace }}/{} destroy" \;
