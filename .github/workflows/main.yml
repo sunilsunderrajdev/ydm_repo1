@@ -51,6 +51,7 @@ jobs:
         run: terraform -chdir=${{ github.workspace }}/tf_level1 apply -auto-approve
       - name: Terraform Plan Level2
         working-directory: ./tf_level2
+        if: github.ref == 'refs/heads/main' && github.event_name == 'push'
         id: plan_level2
         run: terraform -chdir=${{ github.workspace }}/tf_level2 plan
         continue-on-error: true
