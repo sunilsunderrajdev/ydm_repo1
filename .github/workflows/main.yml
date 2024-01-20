@@ -41,18 +41,18 @@ jobs:
           find -mindepth 1 -maxdepth 1 -type d -name "tf_*" -exec bash -c "cd {} && terraform validate" \;
       - name: Terraform Plan Level1
         id: plan_level1
-        run: terraform -chdir=tf_level1 plan
+        run: terraform -chdir=${{ github.workspace }}/tf_level1 plan
         continue-on-error: true
       - name: Terraform Plan Level1 Status
         if: steps.plan_level1.outcome == 'failure'
         run: exit 1
       - name: Terraform Apply Level1
         if: github.ref == 'refs/heads/main' && github.event_name == 'push'
-        run: terraform -chdir=tf_level1 apply -auto-approve
+        run: terraform -chdir=${{ github.workspace }}/tf_level1 apply -auto-approve
       - name: Terraform Plan Level2
         working-directory: ./tf_level2
         id: plan_level2
-        run: terraform -chdir=tf_level2 plan
+        run: terraform -chdir=${{ github.workspace }}/tf_level2 plan
         continue-on-error: true
       - name: Terraform Plan Level2 Status
         if: steps.plan_level2.outcome == 'failure'
@@ -60,7 +60,7 @@ jobs:
       - name: Terraform Apply Level2
         working-directory: ./tf_level2
         if: github.ref == 'refs/heads/main' && github.event_name == 'push'
-        run: terraform -chdir=tf_level2 apply -auto-approve          
+        run: terraform -chdir=${{ github.workspace }}/tf_level2 apply -auto-approve          
       - name: Terraform Plan Destroy
         id: plandestroy
         run: |
