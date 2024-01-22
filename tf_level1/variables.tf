@@ -19,16 +19,3 @@ variable "vpc_cidrs_private" {
   description = "Private Subnet CIDRs"
   default     = ["10.0.3.0/24", "10.0.4.0/24"]
 }
-
-variable "ec2_ami" {
-  type        = string
-  description = "EC2 AMI"
-  default     = "ami-0230bd60aa48260c6"
-}
-
-variable "ec2_instance_type" {
-  type        = string
-  description = "EC2 Instance Type"
-  default     = "t2.micro"
-}
-
