@@ -62,8 +62,8 @@ jobs:
         working-directory: ./tf_level2
         if: github.ref == 'refs/heads/main' && github.event_name == 'push'
         run: terraform -chdir=${{ github.workspace }}/tf_level2 apply -auto-approve
-      - name: Terraform Destroy
-        if: github.ref == 'refs/heads/tf_remote_state' && github.event_name == 'push'
-        run: |
-          cd ${{ github.workspace }}
-          find -mindepth 1 -maxdepth 1 -type d -name "tf_*" -exec bash -c "terraform -chdir=${{ github.workspace }}/{} destroy" \;
+      #- name: Terraform Destroy
+      #  if: github.ref == 'refs/heads/tf_remote_state' && github.event_name == 'push'
+      #  run: |
+      #    cd ${{ github.workspace }}
+      #    find -mindepth 1 -maxdepth 1 -type d -name "tf_*" -exec bash -c "terraform -chdir=${{ github.workspace }}/{} destroy" \;
