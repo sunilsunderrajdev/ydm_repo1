@@ -21,6 +21,7 @@ resource "aws_instance" "ec2ydm_private" {
   subnet_id              = element(data.terraform_remote_state.level1.outputs.private_subnet_id, count.index)
   vpc_security_group_ids = ["${aws_security_group.ssh-allowed.id}"]
   key_name               = "EC2_key_pair_private_AWS"
+  user_data              = file("user-data.sh")
 
   tags = {
     Name : "YDM EC2 ${count.index + 1} in private subnet"
@@ -34,7 +35,6 @@ resource "aws_instance" "ec2ydm_public" {
   subnet_id              = element(data.terraform_remote_state.level1.outputs.public_subnet_id, count.index)
   vpc_security_group_ids = ["${aws_security_group.ssh-allowed.id}"]
   key_name               = "EC2_key_pair_bastion_AWS"
-  user_data              = file("user-data.sh")
 
   tags = {
     Name : "YDM EC2 ${count.index + 1} in public subnet - Bastion host"
@@ -65,6 +65,13 @@ resource "aws_security_group" "ssh-allowed" {
     to_port     = 80
     protocol    = "tcp"
     cidr_blocks = ["0.0.0.0/0"]
+  }
+  ingress {
+    description = "HTTP from Load Balancer"
+    from_port   = 80
+    to_port     = 80
+    protocol    = "tcp"
+    security_groups = [aws_security_group.load_balancer.id]
   }
 
   tags = {
