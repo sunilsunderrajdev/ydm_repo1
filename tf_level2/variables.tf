@@ -3,6 +3,11 @@ variable "region" {
   default = "us-east-1"
 }
 
+variable "env_code" {
+  type    = string
+  default = "main"
+}
+
 variable "ec2_ami" {
   type        = string
   description = "EC2 AMI"
