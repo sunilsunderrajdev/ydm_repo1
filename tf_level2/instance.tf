@@ -15,29 +15,28 @@ data "aws_ami" "amazonlinux" {
 }
 
 resource "aws_instance" "ec2ydm_private" {
-  count                  = 2
   ami                    = data.aws_ami.amazonlinux.id
   instance_type          = var.ec2_instance_type
-  subnet_id              = element(data.terraform_remote_state.level1.outputs.private_subnet_id, count.index)
+  subnet_id              = data.terraform_remote_state.level1.outputs.private_subnet_id[1]
   vpc_security_group_ids = ["${aws_security_group.ssh-allowed.id}"]
   key_name               = "EC2_key_pair_private_AWS"
   user_data              = file("user-data.sh")
 
   tags = {
-    Name : "YDM EC2 ${count.index + 1} in private subnet"
+    Name : "YDM EC2 in private subnet"
   }
 }
 
 resource "aws_instance" "ec2ydm_public" {
-  count                  = 2
-  ami                    = data.aws_ami.amazonlinux.id
-  instance_type          = var.ec2_instance_type
-  subnet_id              = element(data.terraform_remote_state.level1.outputs.public_subnet_id, count.index)
-  vpc_security_group_ids = ["${aws_security_group.ssh-allowed.id}"]
-  key_name               = "EC2_key_pair_bastion_AWS"
+  ami                         = data.aws_ami.amazonlinux.id
+  associate_public_ip_address = true
+  instance_type               = var.ec2_instance_type
+  subnet_id                   = data.terraform_remote_state.level1.outputs.public_subnet_id[1]
+  vpc_security_group_ids      = ["${aws_security_group.ssh-allowed.id}"]
+  key_name                    = "EC2_key_pair_bastion_AWS"
 
   tags = {
-    Name : "YDM EC2 ${count.index + 1} in public subnet - Bastion host"
+    Name : "YDM EC2 in public subnet - Bastion host"
   }
 }
 

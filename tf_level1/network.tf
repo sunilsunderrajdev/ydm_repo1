@@ -1,3 +1,7 @@
+data "aws_availability_zones" "available" {
+  state = "available"
+}
+
 resource "aws_vpc" "vpc" {
   cidr_block           = var.vpc_cidr
   enable_dns_hostnames = true
@@ -31,7 +35,7 @@ resource "aws_subnet" "public_subnets" {
   count                   = length(var.vpc_cidrs_public)
   vpc_id                  = aws_vpc.vpc.id
   cidr_block              = element(var.vpc_cidrs_public, count.index)
-  availability_zone_id    = element(["use1-az1"], count.index)
+  availability_zone       = data.aws_availability_zones.available.names[count.index]
   map_public_ip_on_launch = true
 
   tags = {
@@ -78,7 +82,7 @@ resource "aws_subnet" "private_subnets" {
   count                   = length(var.vpc_cidrs_private)
   vpc_id                  = aws_vpc.vpc.id
   cidr_block              = element(var.vpc_cidrs_private, count.index)
-  availability_zone_id    = element(["use1-az1"], count.index)
+  availability_zone       = data.aws_availability_zones.available.names[count.index]
   map_public_ip_on_launch = false
 
   tags = {
