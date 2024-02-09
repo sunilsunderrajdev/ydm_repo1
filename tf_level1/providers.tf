@@ -9,10 +9,10 @@ terraform {
   }
 
   backend "s3" {
-    bucket          = "tf-remote-state-6166-1131-7351"
-    key             = "level1.tfstate"
-    region          = "us-east-1"
-    dynamodb_table  = "tf-remote-state"
+    bucket         = "tf-remote-state-6166-1131-7351"
+    key            = "level1.tfstate"
+    region         = "us-east-1"
+    dynamodb_table = "tf-remote-state"
   }
 }
 

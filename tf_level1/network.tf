@@ -45,8 +45,8 @@ resource "aws_subnet" "public_subnets" {
 
 /* Routing table for public subnet */
 resource "aws_route_table" "public_routes" {
-  count   = length(var.vpc_cidrs_public)
-  vpc_id  = aws_vpc.vpc.id
+  count  = length(var.vpc_cidrs_public)
+  vpc_id = aws_vpc.vpc.id
 
   tags = {
     Name = "Public route table ${count.index + 1}"
