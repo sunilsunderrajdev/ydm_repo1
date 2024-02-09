@@ -2,12 +2,12 @@ data "aws_ami" "amazonlinux" {
   most_recent = true
 
   filter {
-    name = "name"
+    name   = "name"
     values = ["amzn2-ami-kernel-*"]
   }
 
   filter {
-    name = "virtualization-type"
+    name   = "virtualization-type"
     values = ["hvm"]
   }
 
@@ -53,10 +53,10 @@ resource "aws_security_group" "ssh-allowed" {
     cidr_blocks = ["0.0.0.0/0"]
   }
   ingress {
-    description = "HTTP from Load Balancer"
-    from_port   = 80
-    to_port     = 80
-    protocol    = "tcp"
+    description     = "HTTP from Load Balancer"
+    from_port       = 80
+    to_port         = 80
+    protocol        = "tcp"
     security_groups = [aws_security_group.load_balancer.id]
   }
 
