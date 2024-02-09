@@ -2,8 +2,7 @@ resource "aws_launch_configuration" "main" {
   name_prefix          = "${var.env_code}-"
   image_id             = data.aws_ami.amazonlinux.id
   instance_type        = var.ec2_instance_type
-  security_groups      = ["${aws_security_group.ssh-allowed.id}"]
-  key_name             = "EC2_key_pair_private_AWS"
+  security_groups      = ["${aws_security_group.private.id}"]
   user_data            = file("user-data.sh")
   iam_instance_profile = aws_iam_instance_profile.main.name
 }
