@@ -1,7 +1,7 @@
 resource "aws_iam_policy" "main" {
     name            = var.env_code
     description     = var.env_code
-    aws_iam_policy  = <<EOF
+    policy  = <<EOF
 {
     "Version": "2012-10-17",
     "Statement": [
@@ -19,7 +19,7 @@ resource "aws_iam_role" "main" {
     name                = var.env_code
     assume_role_policy  = <<EOF
 {
-    "Version": "2012-10-17"
+    "Version": "2012-10-17",
     "Statement": [
         {
             "Action": "sts:AssumeRole",
