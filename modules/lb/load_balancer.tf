@@ -1,6 +1,6 @@
 resource "aws_security_group" "load_balancer" {
   name        = "${var.env_code}-load-balancer"
-  description = "Allow port80 into to the ELB"
+  description = "Allow port 443 into to the ELB"
   vpc_id      = var.vpc_id
 
   egress {
@@ -10,9 +10,9 @@ resource "aws_security_group" "load_balancer" {
     cidr_blocks = ["0.0.0.0/0"]
   }
   ingress {
-    description = "Allow HTTP from public to the ELB"
-    from_port   = 80
-    to_port     = 80
+    description = "Allow HTTPS from public to the ELB"
+    from_port   = 443
+    to_port     = 443
     protocol    = "tcp"
     cidr_blocks = ["0.0.0.0/0"]
   }
@@ -54,11 +54,16 @@ resource "aws_lb_target_group" "main" {
 
 resource "aws_lb_listener" "main" {
   load_balancer_arn = aws_lb.main.arn
-  port              = 80
-  protocol          = "HTTP"
+  port              = 443
+  protocol          = "HTTPS"
+  certificate_arn   = aws_acm_certificate.main.arn
 
   default_action {
     type             = "forward"
     target_group_arn = aws_lb_target_group.main.arn
   }
+}
+
+output "dns_name" {
+  value = aws_lb.main.dns_name
 }
