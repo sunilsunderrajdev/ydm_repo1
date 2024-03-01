@@ -15,7 +15,7 @@ resource "aws_security_group" "this" {
         from_port           = "3306"
         to_port             = "3306"
         protocol            = "tcp"
-        security_groups     = {var.source_security_group}
+        security_groups     = [var.source_security_group]
     }
 
     tags = {
@@ -28,7 +28,7 @@ resource "aws_db_instance" "this" {
     allocated_storage       = 10
     engine                  = "mysql"
     instance_class          = "db.t3.micro"
-    name                    = "myssrdb"
+    db_name                    = "myssrdb"
     username                = "admin"
     password                = var.rds_password
     multi_az                = true
