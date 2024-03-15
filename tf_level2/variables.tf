@@ -16,3 +16,12 @@ variable "ec2_instance_type" {
   description = "EC2 Instance Type"
 }
 
+variable "hosted_zone" {
+  type        = string
+  description = "Website name"
+}
+
+variable "domain" {
+  type        = string
+  description = "Website domain"
+}
